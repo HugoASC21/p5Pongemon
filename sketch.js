@@ -2,7 +2,7 @@
  // Justin - Boxes must not leave screen
  // Aaron - score
  // Rafael - score incrementaition + win state
-let state = "game";
+let state = "title"; // 3 states "title", "game", "win"
 let xPos = 350;
 let yPos = 200;
 let score = 0;
@@ -10,7 +10,9 @@ let xSpeed,ySpeed;
 let xDirection,yDirection;
 let p1score = 0;
 let p2score = 0;
-let rect1X = 30; // center coords for rects1 and 2
+let PongemonTitle;
+
+let rect1X = 30; // beginning center coords for rects1 and 2
 let rect1Y = 200;
 let rect2X = 670;
 let rect2Y = 200;
@@ -20,6 +22,9 @@ let rect2Top,rect2Left,rect2Bottom;
 let r,g,b;
 
 
+function preload(){
+    PongemonTitle = loadImage("/images/PongemonTitle.png");
+}
 
 function setup() {
     createCanvas(700,400);
@@ -33,7 +38,13 @@ function setup() {
 
 
 function draw() {
-    if (state == "game") {
+    if (state == "title") {
+        console.log('hi');
+        image(PongemonTitle, 0, 0,700,400);
+       // PongemonTitle.resize();
+    }
+    
+    else if (state == "game") {
     background(0);
     rectangleMovement();
 
@@ -53,15 +64,15 @@ function draw() {
     if(xPos > 695){
         // player 1 gains a point 
         p1score += 1;
-        xPos = 350;
-        yPos = 200;
+        // reset the ball position and the pad positions
+        resetItems();
+       
     }
     if (xPos < 15){
         //player 2 gains a point
         p2score += 1
         // reset the ball to original position
-        xPos = 350;
-        yPos = 200;
+        resetItems();
     } 
 
     textSize(25);
@@ -71,15 +82,13 @@ function draw() {
 
     if (p1score == 13){
         console.log("Player1 wins");
-        xPos = 350;
-        yPos = 200;
+        resetItems();
         state = "win";
         
     }
     else if (p2score == 13){
         console.log("Player2 wins");
-        xPos = 350;
-        yPos = 200;
+        resetItems();
         state = "win";
     }
     }
@@ -91,14 +100,20 @@ function draw() {
         fill(0);
 
         if (p1score == 13) {
-            text("Player 1 has won with "+p1score,180,200);
+            text("Player 1 has won with " + p1score,180,200);
         }
         if (p2score == 13) {
-            text("Player 2 has won with "+p2score,180,200);
+            text("Player 2 has won with " + p2score,180,200);
         }
     }
 }
-  
+function mouseClicked() {
+    // when the mouse is clicked and checks if the state is on the title screen
+    if (state == "title") {
+        state = "game";
+
+    } 
+}
 
 
 
@@ -165,7 +180,15 @@ function rectangleMovement() {
         console.log("Rect 2 collide")
     }
 }
-   
+function resetItems() {
+    // this function will just reset the positions of the ball, and the rectangles
+    xPos = 350;
+    yPos = 200;
+    rect1X = 30;
+    rect1Y = 200;
+    rect2X = 670;
+    rect2Y = 200;
+}   
 
 
 
